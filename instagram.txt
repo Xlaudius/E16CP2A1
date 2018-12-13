@@ -1,0 +1,61 @@
+pintagram;
+
+CREATE TABLE users (id SERIAL PRIMARY KEY,
+name VARCHAR(50),
+email VARCHAR(50)
+);
+
+CREATE TABLE images (
+id SERIAL PRIMARY KEY,
+name VARCHAR(50),
+url VARCHAR,
+user_id INTEGER REFERENCES users (id)
+);
+
+CREATE TABLE likes2 (
+id SERIAL PRIMARY KEY,
+user_id INTEGER REFERENCES users (id),
+image_id INTEGER REFERENCES images (id),
+UNIQUE (image_id, user_id)
+);
+
+CREATE TABLE tags (
+id SERIAL PRIMARY KEY,
+name VARCHAR(50)
+);
+
+CREATE TABLE images_tags2 (
+id SERIAL PRIMARY KEY,
+image_id INTEGER REFERENCES images (id),
+tag_id INTEGER REFERENCES tags (id),
+UNIQUE (image_id, tag_id)
+);
+
+INSERT INTO users (name, email) VALUES ('Claudio', 'claudio@gmail.cl');
+INSERT INTO users (name, email) VALUES ('Alexis', 'alexis@gmail.cl');
+INSERT INTO users (name, email) VALUES ('Roberto', 'roberton@gmail.cl');
+INSERT INTO users (name, email) VALUES ('Felipe', 'felipe@gmail.cl');
+INSERT INTO users (name, email) VALUES ('Lissette', 'litte@gmail.cl');
+INSERT INTO users (name, email) VALUES ('Sebastian', 'sebastian@gmail.cl');
+INSERT INTO images (name, url, user_id) VALUES ('image1', 'http://www.image1.com', 1);
+INSERT INTO images (name, url, user_id) VALUES ('image2', 'http://www.image2.com', 1);
+INSERT INTO images (name, url, user_id) VALUES ('image3', 'http://www.image3.com', 2);
+INSERT INTO images (name, url, user_id) VALUES ('image4', 'http://www.image4.com', 2);
+INSERT INTO images (name, url, user_id) VALUES ('image5', 'http://www.image5.com', 3);
+INSERT INTO images (name, url, user_id) VALUES ('image6', 'http://www.image6.com', 3);
+INSERT INTO images (name, url, user_id) VALUES ('image7', 'http://www.image7.com', 4);
+INSERT INTO images (name, url, user_id) VALUES ('image8', 'http://www.image8.com', 4);
+INSERT INTO images (name, url, user_id) VALUES ('image9', 'http://www.image9.com', 5);
+INSERT INTO images (name, url, user_id) VALUES ('image10', 'http://www.image10.com',5);
+INSERT INTO images (name, url, user_id) VALUES ('image11', 'http://www.image11.com',6);
+INSERT INTO images (name, url, user_id) VALUES ('image12', 'http://www.image12.com',6);
+INSERT INTO likes2 (image_id, user_id) VALUES (1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (2, 3), (3, 1), (3, 2), (3, 3), (4, 1), (4, 2), (4, 3), (5, 1), (5, 2), (5, 3), (6, 1), (6, 2), (6, 3),  (7, 1), (7, 2), (7, 3), (8, 1), (8, 2), (8, 3), (9, 1), (9, 2), (9, 3), (10, 1), (10, 2), (10, 3), (11, 1), (11, 2), (11, 3), (12, 1), (12, 2), (12, 3);
+INSERT INTO tags (name) VALUES ('tag1'),('tag2'),('tag3'),('tag4'),('tag5'),('tag6'),('tag7'),('tag8');
+INSERT INTO likes2 (image_id, user_id) VALUES (1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (2, 3), (3, 1), (3, 2), (3, 3), (4, 1), (4, 2), (4, 3), (5, 1), (5, 2), (5, 3), (6, 1), (6, 2), (6, 3),  (7, 1), (7, 2), (7, 3), (8, 1), (8, 2), (8, 3), (9, 1), (9, 2), (9, 3), (10, 1), (10, 2), (10, 3), (11, 1), (11, 2), (11, 3), (12, 1), (12, 2), (12, 3);
+INSERT INTO images_tags2 (image_id, tag_id) VALUES (1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (2, 3), (3, 1), (3, 2), (3, 3), (4, 1), (4, 2), (4, 3), (5, 1), (5, 2), (5, 3), (6, 1), (6, 2), (6, 3),  (7, 1), (7, 2), (7, 3), (8, 1), (8, 2), (8, 3), (9, 1), (9, 2), (9, 3), (10, 1), (10, 2), (10, 3), (11, 1), (11, 2), (11, 3), (12, 1), (12, 2), (12, 3);
+
+SELECT name, COUNT(likes2.id) FROM images LEFT JOIN likes2 ON (images.id = likes2.image_id) GROUP BY name;
+SELECT users.id, users.name, images.name FROM users LEFT JOIN images ON (users.id = images.user_id) GROUP BY users.id, images.id;
+
+Crear una consulta que muestre el nombre del tag y la cantidad de imagenes asociadas a ese tag.
+SELECT tags.name, COUNT(images_tags2.id) FROM tags LEFT JOIN images_tags2 ON (tags.id = tag_id) GROUP BY tags.name;
